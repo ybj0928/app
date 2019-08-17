@@ -1,2 +1,1 @@
-# npm install
-# npm run dev
+# 说明文档

@@ -7,8 +7,9 @@ import router from '../src/router/router'
 
 import '../lib/bootstrap/css/bootstrap.min.css'
 import 'mint-ui/lib/style.css'
-import '../public/style/main.scss'
 import '../lib/MUI/css/mui.min.css'
+import '../lib/MUI/css/icons-extra.css'
+import '../public/style/main.scss'
 
 Vue.use(VueRouter)
 Vue.use(MintUI)

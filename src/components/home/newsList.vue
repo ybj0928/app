@@ -1,32 +1,17 @@
 <template>
   <div>
     <ul class="mui-table-view">
-      <li class="mui-table-view-cell mui-media">
-        <a href="javascript:;">
-          <img class="mui-media-object mui-pull-left" src="../../static/images/1.jpg">
+      <li class="mui-table-view-cell mui-media" v-for="item in newsList" :key="item.uniquekey">
+        <router-link tag="div" :to="'/home/newsDetail/'+item.id">
+          <img class="mui-media-object mui-pull-left" :src="item.img_url">
           <div class="mui-media-body">
-            幸福
-            <p class='mui-ellipsis'>能和心爱的人一起睡觉，是件幸福的事情；可是，打呼噜怎么办？</p>
+            <div class="news_title">{{item.title}}</div>
+            <div class="news_memo">
+              <span>发表时间：{{item.add_time | formatDate}}</span>
+              <span>点击次数：{{item.click}}</span>
+            </div>
           </div>
-        </a>
-      </li>
-      <li class="mui-table-view-cell mui-media">
-        <a href="javascript:;">
-          <img class="mui-media-object mui-pull-left" src="../../static/images/1.jpg">
-          <div class="mui-media-body">
-            木屋
-            <p class='mui-ellipsis'>想要这样一间小木屋，夏天挫冰吃瓜，冬天围炉取暖.</p>
-          </div>
-        </a>
-      </li>
-      <li class="mui-table-view-cell mui-media">
-        <a href="javascript:;">
-          <img class="mui-media-object mui-pull-left" src="../../static/images/1.jpg">
-          <div class="mui-media-body">
-            CBD
-            <p class='mui-ellipsis'>烤炉模式的城，到黄昏，如同打翻的调色盘一般.</p>
-          </div>
-        </a>
+        </router-link>
       </li>
     </ul>
   </div>
@@ -42,12 +27,11 @@
     },
     methods: {
       getNewsList () {
-        this.$http.get('api/getnews?pageIdx=1').then(res => {
-          console.log(res)
-          if (res.body.status === 1) {
-            this.newsList = res.data.news
+        this.$http.get('api/getnewslist').then(res => {
+          if (res.body.status === 0) {
+            this.newsList = res.body.message
           } else {
-            Toast('系统繁忙')
+            Toast('网络错误')
           }
         })
       }
@@ -57,3 +41,20 @@
     }
   }
 </script>
+
+<style lang="scss" scoped>
+  .news_title {
+    font-size: 14px;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #333;
+  }
+  .news_memo {
+    display: flex;
+    color: #26a2ff;
+    font-size: 12px;
+    justify-content: space-between;
+  }
+</style>

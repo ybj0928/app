@@ -1,10 +1,16 @@
 import VueRouter from 'vue-router'
 
+import root from '../components/root/root.vue'
+
 import home from '../components/home/home.vue'
 import newsList from '../components/home/newsList.vue'
-import root from '../components/root/root.vue'
+import newsDetail from '../components/home/newsDetail.vue'
+import photoShare from '../components/home/photoShare.vue'
+
 import member from '../components/member/member.vue'
+
 import car from '../components/car/car.vue'
+
 import search from '../components/search/search.vue'
 
 const router = new VueRouter({
@@ -17,7 +23,9 @@ const router = new VueRouter({
       children: [
         {path: '', redirect: 'homePage'},
         {path: 'homePage', component: home},
-        {path: 'newsList', component: newsList}
+        {path: 'newsList', component: newsList},
+        {path: 'newsDetail/:id', component: newsDetail},
+        {path: 'photoShare', component: photoShare}
       ]
     },
     {

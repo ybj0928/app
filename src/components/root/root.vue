@@ -98,5 +98,13 @@
     color: #007aff;
   }
 
+  .mint-header.is-fixed {
+    z-index: 999;
+  }
+
+  .mui-bar {
+    box-shadow: none;
+    border-top: .1rem solid #eee;
+  }
 
 </style>

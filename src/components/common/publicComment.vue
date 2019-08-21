@@ -74,6 +74,7 @@
     textarea {
       font-size: 1.4rem;
       margin-bottom: 0;
+      box-sizing: border-box;
     }
     ul {
       margin: 0;

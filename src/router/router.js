@@ -7,6 +7,7 @@ import newsList from '../components/home/newsList.vue'
 import newsDetail from '../components/home/newsDetail.vue'
 import photoShare from '../components/home/photoShare.vue'
 import photoDetails from '../components/home/photoDetails.vue'
+import goodsList from '../components/home/goodsList.vue'
 
 import member from '../components/member/member.vue'
 
@@ -27,7 +28,8 @@ const router = new VueRouter({
         {path: 'newsList', component: newsList},
         {path: 'newsDetail/:id', component: newsDetail},
         {path: 'photoShare', component: photoShare},
-        {path: 'photoDetails/:id', component: photoDetails}
+        {path: 'photoDetails/:id', component: photoDetails},
+        {path: 'goodsList', component: goodsList}
       ]
     },
     {

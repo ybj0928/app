@@ -98,9 +98,5 @@
         }
       }
     }
-    .loaderMore {
-      border: .1rem solid sandybrown;
-      color: sandybrown;
-    }
   }
 </style>

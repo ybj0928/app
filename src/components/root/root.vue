@@ -1,6 +1,8 @@
 <template>
   <div>
-    <mt-header fixed title='杨鞭骥'></mt-header>
+    <mt-header fixed title='杨鞭骥'>
+      <mt-button icon="back" slot="left" @click="goBack"></mt-button>
+    </mt-header>
     <div class="main_container" :style="'min-height: '+ height +'px'">
       <transition name='slide'>
         <router-view></router-view>
@@ -16,7 +18,7 @@
         <span class="mui-tab-label">会员</span>
       </router-link>
       <router-link tag="span" class="mui-tab-item1" to="/car">
-        <span class="mui-icon mui-icon-extra mui-icon-extra-cart"><span class="mui-badge">9</span></span>
+        <span class="mui-icon mui-icon-extra mui-icon-extra-cart"><span class="mui-badge" id="goodsCount">9</span></span>
         <span class="mui-tab-label">购物车</span>
       </router-link>
       <router-link tag="span" class="mui-tab-item1" to='/search'>
@@ -34,7 +36,11 @@
         height: 0
       }
     },
-    methods: {},
+    methods: {
+      goBack () {
+        this.$router.go(-1)
+      }
+    },
     created () {
     },
     mounted () {

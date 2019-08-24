@@ -2,7 +2,9 @@
   <div class="goodsList">
     <div @click="toGoodsDetail(item.id)" class="goodsItem" v-for="item in goodsList" :key='item.id'>
       <div class="imgWord">
-        <img :src="item.img_url" width="100%" alt="">
+        <div>
+          <img v-lazy="item.img_url" width="100%" alt="加载失败">
+        </div>
         <h3>{{item.title}}</h3>
       </div>
       <div class="priceAndStatus">
@@ -47,7 +49,10 @@
         this.getGoodsList()
       },
       toGoodsDetail (id) {
-        console.log(id)
+        this.$router.push({
+          path: '/home/goodsDetails',
+          query: { id }
+        })
       }
     },
     created () {
@@ -57,6 +62,11 @@
 </script>
 
 <style lang="scss" scoped>
+  img[lazy=loading] {
+    width: 3em;
+    height: 3rem;
+    margin: 8rem auto;
+  }
   .goodsList {
     padding: 1rem;
     display: flex;
@@ -73,10 +83,15 @@
         margin-top: 0;
       }
       .imgWord {
-        img {
-          border-radius: 0 0 .5rem .5rem;
-          vertical-align: middle;
+        >div {
           min-height: 16rem;
+          border-radius: 0 0 .5rem .5rem;
+          overflow: hidden;
+          background: #999;
+          text-align: center;
+          img {
+            vertical-align: middle;
+          }
         }
         h3 {
           font-size: 1.6rem;

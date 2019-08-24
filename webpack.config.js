@@ -13,7 +13,7 @@ module.exports = {
   },
   devServer: {
     port: 8089,
-    host: '10.10.10.28',
+    host: '192.168.2.230',
     open: true,
     contentBase: 'dist'
   },

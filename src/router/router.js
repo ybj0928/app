@@ -8,6 +8,9 @@ import newsDetail from '../components/home/newsDetail.vue'
 import photoShare from '../components/home/photoShare.vue'
 import photoDetails from '../components/home/photoDetails.vue'
 import goodsList from '../components/home/goodsList.vue'
+import goodsDetails from '../components/home/goodsDetails.vue'
+import goodsIntro from '../components/home/goodIntro.vue'
+import goodsComment from '../components/home/goodsComment.vue'
 
 import member from '../components/member/member.vue'
 
@@ -29,7 +32,10 @@ const router = new VueRouter({
         {path: 'newsDetail/:id', component: newsDetail},
         {path: 'photoShare', component: photoShare},
         {path: 'photoDetails/:id', component: photoDetails},
-        {path: 'goodsList', component: goodsList}
+        {path: 'goodsList', component: goodsList},
+        {path: 'goodsDetails', component: goodsDetails},
+        {path: 'goodsIntro/:id', component: goodsIntro, name: 'goodsIntro'},
+        {path: 'goodsComment/:id', component: goodsComment, name: 'goodsComment'}
       ]
     },
     {

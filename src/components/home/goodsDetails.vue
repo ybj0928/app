@@ -1,60 +1,69 @@
 <template>
   <div class="goodsDetails">
-    <div class="mui-card">
-      <div class="mui-card-content">
-        <div class="mui-card-content-inner">
-          <mt-swipe>
-            <mt-swipe-item v-for="item in imageList" :key="item.src">
-              <img :src="item.src" alt />
-            </mt-swipe-item>
-          </mt-swipe>
+    <div class="fixedBg">
+      <div class="mui-card">
+        <div class="mui-card-content">
+          <div class="mui-card-content-inner">
+            <mt-swipe>
+              <mt-swipe-item v-for="item in imageList" :key="item.src">
+                <img :src="item.src" alt />
+              </mt-swipe-item>
+            </mt-swipe>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="mui-card" style="overflow: visible">
-      <div class="mui-card-header">{{ goodsDetail.title }}</div>
-      <div class="mui-card-content">
-        <div class="mui-card-content-inner">
-          <div class="priceInfo">
-            <div>
-              市场价：<span>¥{{ goodsDetail.market_price }}</span>
-              销售价：<span>¥{{ goodsDetail.sell_price }}</span>
-            </div>
-            <div class="ballFather">
-              购买数量：<number-box :max="goodsDetail.stock_quantity"></number-box>
-              <transition
-                v-on:before-enter="beforeEnter"
-                v-on:enter="enter"
-                v-on:after-enter="afterEnter">
-                <div class="ball" v-if="isShowBall"></div>
-              </transition>
-            </div>
-            <div>
-              <div class="mui-btn mui-btn-primary">立即购买</div>
-              <div class="mui-btn mui-btn-danger" @click="addToCar">加入购物车</div>
+      <div class="mui-card" style="overflow: visible">
+        <div class="mui-card-header">{{ goodsDetail.title }}</div>
+        <div class="mui-card-content">
+          <div class="mui-card-content-inner">
+            <div class="priceInfo">
+              <div>
+                市场价：<span>¥{{ goodsDetail.market_price }}</span>
+                销售价：<span>¥{{ goodsDetail.sell_price }}</span>
+              </div>
+              <div class="ballFather">
+                购买数量：
+                <number-box 
+                  :max="goodsDetail.stock_quantity" 
+                  @getCount="getCount"
+                  :count='count'
+                ></number-box>
+                <transition
+                  v-on:before-enter="beforeEnter"
+                  v-on:enter="enter"
+                  v-on:after-enter="afterEnter">
+                  <div class="ball" v-if="isShowBall"></div>
+                </transition>
+              </div>
+              <div>
+                <div class="mui-btn mui-btn-primary">立即购买</div>
+                <div class="mui-btn mui-btn-danger" @click="addToCar">加入购物车</div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="mui-card">
-      <div class="mui-card-header">商品参数</div>
-      <div class="mui-card-content">
-        <div class="mui-card-content-inner h10 text_left paramsProduct">
-          <div>商品货号：<span>{{ goodsDetail.goods_no }}</span></div>
-          <div>库存情况：<span>{{ goodsDetail.stock_quantity }}</span></div>
-          <div>上架时间：<span>{{ goodsDetail.add_time | formatDate }}</span></div>
+      <div class="mui-card">
+        <div class="mui-card-header">商品参数</div>
+        <div class="mui-card-content">
+          <div class="mui-card-content-inner h10 text_left paramsProduct">
+            <div>商品货号：<span>{{ goodsDetail.goods_no }}</span></div>
+            <div>库存情况：<span>{{ goodsDetail.stock_quantity }}</span></div>
+            <div>上架时间：<span>{{ goodsDetail.add_time | formatDate }}</span></div>
+          </div>
+        </div>
+        <div class="mui-card-footer lastBtns">
+          <mt-button @click="toIntro" size='large' type="primary" plain>图文介绍</mt-button>
+          <mt-button @click="toComment" size='large' type="danger" plain>商品评论</mt-button>
         </div>
       </div>
-      <div class="mui-card-footer lastBtns">
-        <mt-button @click="toIntro" size='large' type="primary" plain>图文介绍</mt-button>
-        <mt-button @click="toComment" size='large' type="danger" plain>商品评论</mt-button>
-      </div>
     </div>
+    <div class="mask"></div>
   </div>
 </template>
 
 <script>
+  import {Toast} from 'mint-ui'
   import numberBox from '../common/numberBox.vue'
   export default {
     data () {
@@ -62,7 +71,10 @@
         id: this.$route.query.id,
         imageList: [],
         goodsDetail: {},
-        isShowBall: false
+        isShowBall: false,
+        count: 0,
+        selectCount: 0,
+        scrollTop: 0
       }
     },
     methods: {
@@ -91,10 +103,29 @@
         this.$router.push({name: 'goodsComment', params: {id: this.id}})
       },
       addToCar () {
-        this.isShowBall = !this.isShowBall
+        if (Number(this.selectCount) !== 0) {
+          this.isShowBall = !this.isShowBall
+          let arr = {
+            id: this.id,
+            count: this.selectCount,
+            select: true,
+            price: this.goodsDetail.sell_price
+          }
+          this.$store.commit('detailAddGoods', arr)
+        } else {
+          this.isShowBall = false
+          Toast('商品数量不能为0')
+        }
+        
       },
       beforeEnter (el) {
         el.style.transform = 'translate(0, 0)'
+        this.scrollTop = document.body.scrollTop === 0 ? document.documentElement.scrollTop : document.body.scrollTop
+        let oBg = document.getElementsByClassName('fixedBg')[0]
+        let oMask = document.getElementsByClassName('mask')[0]
+        oBg.style.position = 'fixed'
+        oBg.style.top = (-this.scrollTop + 40) + 'px'
+        oMask.style.display = 'block'
       },
       enter (el, done) {
         el.offsetWidth
@@ -105,7 +136,18 @@
         done()
       },
       afterEnter (el) {
+        setTimeout(() => {
+          let scrollheight = document.body.scrollTop === 0 ? document.documentElement.scrollTop : document.body.scrollTop
+          let oBg = document.getElementsByClassName('fixedBg')[0]
+          let oMask = document.getElementsByClassName('mask')[0]
+          oBg.style.position = 'static'
+          window.scrollTo(0, this.scrollTop)
+          oMask.style.display = 'none'
+        }, 800)
         this.isShowBall = !this.isShowBall
+      },
+      getCount (count) {
+        this.selectCount = count
       }
     },
     created () {
@@ -130,9 +172,24 @@
     height: 10rem;
   }
   .goodsDetails {
+    .fixedBg {
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #eee;
+    }
+    .mask {
+      position: absolute;
+      display: none;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
     background: #eee;
-    border: 1px solid #eee;
-    box-sizing: border-box;
+    // border: 1px solid #eee;
+    overflow: hidden;
+    // box-sizing: border-box;
     .priceInfo {
       text-align: left;
       height: 100%;

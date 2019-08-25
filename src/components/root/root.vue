@@ -1,7 +1,7 @@
 <template>
   <div>
     <mt-header fixed title='杨鞭骥'>
-      <mt-button icon="back" slot="left" @click="goBack"></mt-button>
+      <mt-button icon="back" slot="left" v-if="gobackIcon" @click="goBack"></mt-button>
     </mt-header>
     <div class="main_container" :style="'min-height: '+ height +'px'">
       <transition name='slide'>
@@ -18,7 +18,7 @@
         <span class="mui-tab-label">会员</span>
       </router-link>
       <router-link tag="span" class="mui-tab-item1" to="/car">
-        <span class="mui-icon mui-icon-extra mui-icon-extra-cart"><span class="mui-badge" id="goodsCount">9</span></span>
+        <span class="mui-icon mui-icon-extra mui-icon-extra-cart"><span class="mui-badge" id="goodsCount">{{$store.getters.getBage ? $store.getters.getBage : 0}}</span></span>
         <span class="mui-tab-label">购物车</span>
       </router-link>
       <router-link tag="span" class="mui-tab-item1" to='/search'>
@@ -33,7 +33,8 @@
   export default {
     data () {
       return {
-        height: 0
+        height: 0,
+        gobackIcon: false
       }
     },
     methods: {
@@ -45,6 +46,13 @@
     },
     mounted () {
       this.height = document.documentElement.clientHeight
+    },
+    watch: {
+      '$route.path' (newVal, oldVal) {
+        console.log(newVal)  
+        this.gobackIcon = newVal === '/home/homePage' ? false : true
+         
+      }
     }
   }
 </script>

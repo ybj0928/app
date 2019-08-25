@@ -7,6 +7,7 @@ import router from '../src/router/router'
 import vueResource from 'vue-resource'
 import filters from './filter/filter.js'
 import VuePreview from 'vue-preview'
+import store from './store'
 
 import '../lib/bootstrap/css/bootstrap.min.css'
 import 'mint-ui/lib/style.css'
@@ -29,5 +30,6 @@ let vm = new Vue({
   el: '#app',
   template: '<App/>',
   components: {App},
-  router
+  router,
+  store
 })

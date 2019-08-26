@@ -84,7 +84,7 @@
       }
       .imgWord {
         >div {
-          min-height: 16rem;
+          min-height: 14rem;
           border-radius: 0 0 .5rem .5rem;
           overflow: hidden;
           background: #999;
